@@ -1,0 +1,20 @@
+rule cp
+  command = cp $in $out
+
+rule zip
+  command = cd dist; zip ../$out `echo $in|sed 's/dist\///g'`
+
+build dist/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.woff: cp src/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.woff
+build dist/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.ttf: cp src/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.ttf
+build dist/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.svg: cp src/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.svg
+build dist/third_party/bootstrap-3.0.0/css/bootstrap.min.css: cp src/third_party/bootstrap-3.0.0/css/bootstrap.min.css
+build dist/third_party/jquery-1.10.2/jquery.min.js: cp src/third_party/jquery-1.10.2/jquery.min.js
+build dist/third_party/bootstrap-3.0.0/js/bootstrap.min.js: cp src/third_party/bootstrap-3.0.0/js/bootstrap.min.js
+build dist/ui.html: cp src/ui.html
+build dist/ui.js: cp src/ui.js
+build dist/mp3player.js: cp src/mp3player.js
+build dist/manifest.json: cp chrome/manifest.json
+build dist/launch.js: cp chrome/launch.js
+build dist/icon_016.png: cp chrome/icons/icon_016.png
+build dist/icon_128.png: cp chrome/icons/icon_128.png
+build webpak5.zip: zip dist/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.woff dist/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.ttf dist/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.svg dist/third_party/bootstrap-3.0.0/css/bootstrap.min.css dist/third_party/jquery-1.10.2/jquery.min.js dist/third_party/bootstrap-3.0.0/js/bootstrap.min.js dist/ui.html dist/ui.js dist/mp3player.js dist/launch.js dist/manifest.json dist/icon_016.png dist/icon_128.png

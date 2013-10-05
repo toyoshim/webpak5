@@ -1,2 +1,5 @@
 .c9revisions
+.ninja_*
+dist
 src/third_party
+webpak5.zip

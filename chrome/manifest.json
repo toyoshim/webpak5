@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "webpak5",
+  "description": "wpak32 compatible mp3 player in HTML5",
+  "version": "0.1.1",
+  "app": {
+    "background": {
+      "scripts": [ "launch.js" ]
+    }
+  },
+  "icons": {
+    "16": "icon_016.png",
+    "128": "icon_128.png"
+  }
+}
