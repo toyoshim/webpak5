@@ -24,7 +24,7 @@ Mp3Player = function () {
     for (var i = 0; i < this.clipSize; ++i)
         this.clipTable[i] = Math.sin(Math.PI * i / (this.clipSize - 1));
 
-    this.audioContext = new webkitAudioContext();
+    this.audioContext = new AudioContext();
     this.audioProcessor = this.audioContext.createScriptProcessor(this.bufferSize, 0, 2);
     this.audioProcessor.onaudioprocess = this._onAudioProcess.bind(this);
     this.audioProcessor.connect(this.audioContext.destination);
