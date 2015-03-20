@@ -60,6 +60,26 @@ animation = function (timestamp) {
     requestAnimationFrame(animation);
 };
 
+openFile = function (file) {
+    var reader = new FileReader();
+    reader.onload = function () {
+        $('#progress').parent().addClass('progress-striped');
+        $('#progress').parent().addClass('active');
+        $('#progress').css({'width': '100%'});
+        loading = true;
+        player.load(this.result, function () {
+            loading = false;
+            $('#progress').parent().removeClass('progress-striped');
+            $('#progress').parent().removeClass('active');
+            $('#progress').css({'width': '0%'});
+            lastDuration = -1;
+            drawMarkers();
+            animation();
+        });
+    };
+    reader.readAsArrayBuffer(file);
+};
+
 $(function () {
     // Push default buttons.
     $('#source-stereo').addClass('active');
@@ -82,24 +102,7 @@ $(function () {
 
     // Set file handler.
     $('#file').on('change', function (e) {
-        var file = e.target.files[0];
-        var reader = new FileReader();
-        reader.onload = function () {
-            $('#progress').parent().addClass('progress-striped');
-            $('#progress').parent().addClass('active');
-            $('#progress').css({'width': '100%'});
-            loading = true;
-            player.load(this.result, function () {
-                loading = false;
-                $('#progress').parent().removeClass('progress-striped');
-                $('#progress').parent().removeClass('active');
-                $('#progress').css({'width': '0%'});
-                lastDuration = -1;
-                drawMarkers();
-                animation();
-            });
-        };
-        reader.readAsArrayBuffer(file);
+        openFile(e.target.files[0]);
     });
 
     // Set mouse navigation handler.    
@@ -152,7 +155,7 @@ $(function () {
         };
         var id = $(this).attr('id');
         if (!handlers[id])
-return;
+            return;
         handlers[id]();
     });
     $('.btn').on('mousedown', function () {
@@ -204,4 +207,13 @@ return;
             return;
         handlers[char]();
     });
+
+    // Application is launched to handle a file that is passed from Files.app.
+    if (window['_openFile']) {
+        window._openFile.entry.file(function(file) {
+            openFile(file);
+        }, function (e) {
+            console.log(e);
+        });
+    }
 });
