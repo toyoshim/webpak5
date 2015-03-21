@@ -157,6 +157,8 @@ $(function () {
         if (!handlers[id])
             return;
         handlers[id]();
+        // Remove button focus.
+        $(this).blur();
     });
     $('.btn').on('mousedown', function () {
         var handlers = {
@@ -177,6 +179,8 @@ $(function () {
         if (!handlers[id])
             return;
         handlers[id]();
+        // Remove button focus.
+        $(this).blur();
     });
     $('body').on('keydown', function (e) {
         var handlers = {
