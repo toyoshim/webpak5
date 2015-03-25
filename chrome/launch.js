@@ -6,6 +6,7 @@ chrome.app.runtime.onLaunched.addListener(function(data) {
       'height': 460 
     }
   }, function (window) {
-    window.contentWindow._openFile = data.items[0];
+    if (data.items)
+      window.contentWindow._openFile = data.items[0];
   }.bind(data));
 });
