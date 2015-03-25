@@ -182,17 +182,17 @@ $(function () {
         // Remove button focus.
         $(this).blur();
     });
+    var handlers = {
+        'E': [ fileOpenDialog, null ],
+        'Z': [ function (q) { player.setSpeed(speed * -8, speed * 8); }, player.stepback.bind(player) ],
+        'S': [ player.stop.bind(player), null ],
+        ' ': [ player.play.bind(player), null ],
+        'X': [ function (q) { player.pause(!player.isPaused()); }, null ],
+        'C': [ function (q) { player.setSpeed(speed * 8, speed * 8); }, player.stepforward.bind(player) ],
+        'N': [ function (q) { player.markAsStart(); drawMarkers(); }, null ],
+        'M': [ function (q) { player.markAsEnd(); drawMarkers(); }, null ]
+    };
     $('body').on('keydown', function (e) {
-        var handlers = {
-            'E': [ fileOpenDialog, null ],
-            'Z': [ function (q) { player.setSpeed(speed * -8, speed * 8); }, player.stepback.bind(player) ],
-            'S': [ player.stop.bind(player), null ],
-            ' ': [ player.play.bind(player), null ],
-            'X': [ function (q) { player.pause(!player.isPaused()); }, null ],
-            'C': [ function (q) { player.setSpeed(speed * 8, speed * 8); }, player.stepforward.bind(player) ],
-            'N': [ function (q) { player.markAsStart(); drawMarkers(); }, null ],
-            'M': [ function (q) { player.markAsEnd(); drawMarkers(); }, null ]
-        }
         var char = String.fromCharCode(e.keyCode);
         if (!handlers[char])
             return;
@@ -218,6 +218,15 @@ $(function () {
             openFile(file);
         }, function (e) {
             console.log(e);
+        });
+    }
+
+    // Shortcut handler.
+    if (window['chrome'] && window.chrome['commands']) {
+        chrome.commands.onCommand.addListener(function(command) {
+            if (!handlers[command])
+                return;
+            handlers[command][0]();
         });
     }
 });
