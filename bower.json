@@ -16,6 +16,6 @@
   "dependencies": {
     "bootstrap": "3.0.0",
     "jquery": "1.10.2",
-    "jslt": "0.4.0"
+    "jslt": "0.4.2"
   }
 }

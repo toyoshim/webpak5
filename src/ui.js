@@ -76,6 +76,7 @@ openFile = function (file) {
             drawMarkers();
             animation();
         });
+        $('#icon').attr('src', player.imageUrl());
     };
     reader.readAsArrayBuffer(file);
 };
@@ -105,7 +106,7 @@ $(function () {
         openFile(e.target.files[0]);
     });
 
-    // Set mouse navigation handler.    
+    // Set mouse navigation handler.
     $('#progress-marker').on('mousedown', function (e) {
         markerDrag = true;
         handleMarkerDrag(e);

@@ -13,6 +13,8 @@ Mp3Player = function () {
     this.audioSpeed = 1;
     this.audioPitch = 1;
     this.audioSource = Mp3Player.SOURCE_STEREO;
+    this.id3 = null;
+    this.image = null;
     
     this.buffer = [
         new Float32Array(this.bufferSize * 8),
@@ -205,6 +207,15 @@ Mp3Player.prototype._onAudioProcessStretch = function (e) {
 };
 
 Mp3Player.prototype.load = function (file, cb) {
+    this.id3 = new ID3v2(file);
+    if (this.id3.error()) {
+        console.error(this.id3.error());
+        this.id3 = null;
+    } else {
+        console.log('title: ' + this.id3.title());
+        console.log('album: ' + this.id3.album());
+        console.log('artist: ' + this.id3.artist());
+    }
     this.audioContext.decodeAudioData(file, function(buffer) {
         this.audioPause = true;
         this.audioBuffer = null;
@@ -285,4 +296,13 @@ Mp3Player.prototype.markAsStart = function () {
 
 Mp3Player.prototype.markAsEnd = function () {
     this.audioEndPoint = this.audioOffset;
+};
+
+Mp3Player.prototype.imageUrl = function () {
+    if (!this.id3 || !this.id3.image())
+        return 'icon_128.png';
+    var imageData = this.id3.image();
+    var imageType = this.id3.imageType();
+    this.image = new Blob([imageData], { type: imageType });
+    return URL.createObjectURL(this.image);
 };

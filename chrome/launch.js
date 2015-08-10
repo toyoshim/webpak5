@@ -3,7 +3,7 @@ chrome.app.runtime.onLaunched.addListener(function(data) {
     resizable: false,
     bounds: {
       'width': 480,
-      'height': 460 
+      'height': 469
     }
   }, function (window) {
     if (data.items)
