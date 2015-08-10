@@ -4,12 +4,12 @@ rule cp
 rule zip
   command = cd dist; zip ../$out `echo $in|sed 's/dist\///g'`
 
-build dist/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.woff: cp src/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.woff
-build dist/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.ttf: cp src/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.ttf
-build dist/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.svg: cp src/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.svg
-build dist/third_party/bootstrap-3.0.0/css/bootstrap.min.css: cp src/third_party/bootstrap-3.0.0/css/bootstrap.min.css
-build dist/third_party/jquery-1.10.2/jquery.min.js: cp src/third_party/jquery-1.10.2/jquery.min.js
-build dist/third_party/bootstrap-3.0.0/js/bootstrap.min.js: cp src/third_party/bootstrap-3.0.0/js/bootstrap.min.js
+build dist/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.woff: cp bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff
+build dist/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.ttf: cp bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf
+build dist/third_party/bootstrap-3.0.0/fonts/glyphicons-halflings-regular.svg: cp bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg
+build dist/third_party/bootstrap-3.0.0/css/bootstrap.min.css: cp bower_components/bootstrap/dist/css/bootstrap.min.css
+build dist/third_party/jquery-1.10.2/jquery.min.js: cp bower_components/jquery/jquery.min.js
+build dist/third_party/bootstrap-3.0.0/js/bootstrap.min.js: cp bower_components/bootstrap/dist/js/bootstrap.min.js
 build dist/ui.html: cp src/ui.html
 build dist/ui.js: cp src/ui.js
 build dist/mp3player.js: cp src/mp3player.js

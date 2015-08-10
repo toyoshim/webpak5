@@ -1,0 +1,21 @@
+{
+  "name": "webpak5",
+  "version": "0.3.0",
+  "homepage": "https://github.com/toyoshim/webpak5",
+  "authors": [
+    "Takashi Toyoshima <toyoshim@gmail.com>"
+  ],
+  "description": "wpak32 compatible mp3 player in HTML5",
+  "license": "New BSD",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "bootstrap": "3.0.0",
+    "jquery": "1.10.2",
+    "jslt": "0.4.0"
+  }
+}
