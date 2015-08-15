@@ -77,6 +77,9 @@ openFile = function (file) {
             animation();
         });
         $('#icon').attr('src', player.imageUrl());
+        $('#album').text(player.album());
+        $('#artist').text(player.artist());
+        $('#title').text(player.title());
     };
     reader.readAsArrayBuffer(file);
 };
