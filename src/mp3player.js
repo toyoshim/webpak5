@@ -306,3 +306,21 @@ Mp3Player.prototype.imageUrl = function () {
     this.image = new Blob([imageData], { type: imageType });
     return URL.createObjectURL(this.image);
 };
+
+Mp3Player.prototype.album = function () {
+    if (!this.id3 || !this.id3.album())
+        return '';
+    return this.id3.album();
+};
+
+Mp3Player.prototype.artist = function () {
+    if (!this.id3 || !this.id3.artist())
+        return '';
+    return this.id3.artist();
+};
+
+Mp3Player.prototype.title = function () {
+    if (!this.id3 || !this.id3.title())
+        return '';
+    return this.id3.title();
+};
