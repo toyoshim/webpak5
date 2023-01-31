@@ -236,4 +236,10 @@ $(function () {
             handlers[command][0]();
         });
     }
+
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        var frameWidth = window.outerWidth - window.innerWidth;
+        var frameHeight = window.outerHeight - window.innerHeight;
+        window.resizeTo(500 + frameWidth, 490 + frameHeight);
+    }
 });

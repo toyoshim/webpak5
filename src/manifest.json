@@ -1,0 +1,17 @@
+{
+  "name": "webpak5",
+  "display": "standalone",
+  "description": "wpak32 compatible mp3 player in HTML5",
+  "icons": [
+    {
+      "src": "icon_016.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    }
+  ]
+}
