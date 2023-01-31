@@ -26,8 +26,8 @@ fileOpenDialog = function (q) {
 
 drawMarkers = function () {
     var width = markerWidth - 1;
-    var start = (player.startDuration() * width)|0;
-    var end = (player.endDuration() * width)|0;
+    var start = (player.startDuration() * width) | 0;
+    var end = (player.endDuration() * width) | 0;
     markerContext.clearRect(0, 0, markerWidth, markerHeight);
     if (start == end) {
         markerContext.fillStyle = 'rgb(255, 255, 0)';
@@ -55,7 +55,7 @@ animation = function (timestamp) {
         var value = duration * 100;
         var width = value.toString() + '%';
         $('#progress').attr('aria-valuenow', value);
-        $('#progress').css({'width': width});
+        $('#progress').css({ 'width': width });
     }
     requestAnimationFrame(animation);
 };
@@ -65,13 +65,13 @@ openFile = function (file) {
     reader.onload = function () {
         $('#progress').parent().addClass('progress-striped');
         $('#progress').parent().addClass('active');
-        $('#progress').css({'width': '100%'});
+        $('#progress').css({ 'width': '100%' });
         loading = true;
         player.load(this.result, function () {
             loading = false;
             $('#progress').parent().removeClass('progress-striped');
             $('#progress').parent().removeClass('active');
-            $('#progress').css({'width': '0%'});
+            $('#progress').css({ 'width': '0%' });
             lastDuration = -1;
             drawMarkers();
             animation();
@@ -90,13 +90,13 @@ $(function () {
     $('#filter-flat').addClass('active');
     $('#pitch-x1').addClass('active');
     $('#speed-x1').addClass('active');
-    
+
     // Initialize progress bar and markers
-    $('.progress-bar').css({'transitionDuration': '0s'});
+    $('.progress-bar').css({ 'transitionDuration': '0s' });
     markerWidth = $('#progress-view').width();
     markerHeight = $('#progress-view').height();
     markerContext = $('#progress-marker')[0].getContext('2d');
-    markerContext.width =  markerWidth;
+    markerContext.width = markerWidth;
     markerContext.height = markerHeight;
     $('#progress-marker').width(markerWidth);
     $('#progress-marker').height(markerHeight);
@@ -122,11 +122,12 @@ $(function () {
     $('#progress-marker').on('mouseup', function (e) {
         markerDrag = false;
     });
-    
+
     // TODO: Set darg & drop handler.
-    
+
     // Set button click handler.
     $('.btn').on('click', function () {
+        player.resume();
         var handlers = {
             'source-stereo': function () { player.setSource(Mp3Player.SOURCE_STEREO); },
             'source-l+r': function () { player.setSource(Mp3Player.SOURCE_L_PLUS_R); },
@@ -134,7 +135,7 @@ $(function () {
             'source-r': function () { player.setSource(Mp3Player.SOURCE_R); },
             'source-l-r': function () { player.setSource(Mp3Player.SOURCE_L_MINUS_R); },
 
-            'filter-flat': function () {},
+            'filter-flat': function () { },
             'filter-1': function () { log('not implemented.'); },
             'filter-2': function () { log('not implemented.'); },
             'filter-3': function () { log('not implemented.'); },
@@ -142,7 +143,7 @@ $(function () {
 
             'pitch-x2': function () { pitch = 2; player.setSpeed(speed, pitch); },
             'pitch-x1': function () { pitch = 1; player.setSpeed(speed, pitch); },
-            'pitch-x0.5': function ()  { pitch = 0.5; player.setSpeed(speed, pitch); },
+            'pitch-x0.5': function () { pitch = 0.5; player.setSpeed(speed, pitch); },
 
             'speed-x2': function () { speed = 2; player.setSpeed(speed, pitch); },
             'speed-x1': function () { speed = 1; player.setSpeed(speed, pitch); },
@@ -165,6 +166,7 @@ $(function () {
         $(this).blur();
     });
     $('.btn').on('mousedown', function () {
+        player.resume();
         var handlers = {
             'button-back': function (q) { player.setSpeed(speed * -8, speed * 8); },
             'button-forward': function (q) { player.setSpeed(speed * 8, speed * 8); },
@@ -187,16 +189,17 @@ $(function () {
         $(this).blur();
     });
     var handlers = {
-        'E': [ fileOpenDialog, null ],
-        'Z': [ function (q) { player.setSpeed(speed * -8, speed * 8); }, player.stepback.bind(player) ],
-        'S': [ player.stop.bind(player), null ],
-        ' ': [ player.play.bind(player), null ],
-        'X': [ function (q) { player.pause(!player.isPaused()); }, null ],
-        'C': [ function (q) { player.setSpeed(speed * 8, speed * 8); }, player.stepforward.bind(player) ],
-        'N': [ function (q) { player.markAsStart(); drawMarkers(); }, null ],
-        'M': [ function (q) { player.markAsEnd(); drawMarkers(); }, null ]
+        'E': [fileOpenDialog, null],
+        'Z': [function (q) { player.setSpeed(speed * -8, speed * 8); }, player.stepback.bind(player)],
+        'S': [player.stop.bind(player), null],
+        ' ': [player.play.bind(player), null],
+        'X': [function (q) { player.pause(!player.isPaused()); }, null],
+        'C': [function (q) { player.setSpeed(speed * 8, speed * 8); }, player.stepforward.bind(player)],
+        'N': [function (q) { player.markAsStart(); drawMarkers(); }, null],
+        'M': [function (q) { player.markAsEnd(); drawMarkers(); }, null]
     };
     $('body').on('keydown', function (e) {
+        player.resume();
         var char = String.fromCharCode(e.keyCode);
         if (!handlers[char])
             return;
@@ -218,7 +221,7 @@ $(function () {
 
     // Application is launched to handle a file that is passed from Files.app.
     if (window['_openFile']) {
-        window._openFile.entry.file(function(file) {
+        window._openFile.entry.file(function (file) {
             openFile(file);
         }, function (e) {
             console.log(e);
@@ -227,10 +230,16 @@ $(function () {
 
     // Shortcut handler.
     if (window['chrome'] && window.chrome['commands']) {
-        chrome.commands.onCommand.addListener(function(command) {
+        chrome.commands.onCommand.addListener(function (command) {
             if (!handlers[command])
                 return;
             handlers[command][0]();
         });
+    }
+
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        var frameWidth = window.outerWidth - window.innerWidth;
+        var frameHeight = window.outerHeight - window.innerHeight;
+        window.resizeTo(500 + frameWidth, 490 + frameHeight);
     }
 });
