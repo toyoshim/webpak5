@@ -15,12 +15,12 @@ Mp3Player = function () {
     this.audioSource = Mp3Player.SOURCE_STEREO;
     this.id3 = null;
     this.image = null;
-    
+
     this.buffer = [
         new Float32Array(this.bufferSize * 8),
         new Float32Array(this.bufferSize * 8)
     ];
-    
+
     this.clipSize = this.bufferSize;
     this.clipTable = new Float32Array(this.clipSize);
     for (var i = 0; i < this.clipSize; ++i)
@@ -153,13 +153,13 @@ Mp3Player.prototype._onAudioProcessSimple = function (e) {
     var inR = buffer.right;
     if (speed >= 0) {
         for (i = 0; i < length; ++i) {
-            left[i] = inL[(i * speed)|0];
-            right[i] = inR[(i * speed)|0];
+            left[i] = inL[(i * speed) | 0];
+            right[i] = inR[(i * speed) | 0];
         }
     } else {
         for (i = 0; i < length; ++i) {
-            left[length - 1 - i] = inL[(i * -speed)|0];
-            right[length - 1 - i] = inR[(i * -speed)|0];
+            left[length - 1 - i] = inL[(i * -speed) | 0];
+            right[length - 1 - i] = inR[(i * -speed) | 0];
         }
     }
     this.audioOffset = buffer.offset;
@@ -189,19 +189,19 @@ Mp3Player.prototype._onAudioProcessStretch = function (e) {
     var halfSize = length / 2;
     var shiftSize = halfSize * rate;
     for (i = 0; i < halfSize; ++i) {
-        left[i] = inL[(offset + i * speed + shiftSize)|0] * this.clipTable[i + halfSize];
-        right[i] = inR[(offset + i * speed + shiftSize)|0] * this.clipTable[i + halfSize];
+        left[i] = inL[(offset + i * speed + shiftSize) | 0] * this.clipTable[i + halfSize];
+        right[i] = inR[(offset + i * speed + shiftSize) | 0] * this.clipTable[i + halfSize];
     }
     for (i = halfSize; i < length; ++i) {
-        left[i] = inL[(offset + i * speed - shiftSize)|0] * this.clipTable[i - halfSize];
-        right[i] = inR[(offset + i * speed - shiftSize)|0] * this.clipTable[i - halfSize];
+        left[i] = inL[(offset + i * speed - shiftSize) | 0] * this.clipTable[i - halfSize];
+        right[i] = inR[(offset + i * speed - shiftSize) | 0] * this.clipTable[i - halfSize];
     }
     for (i = 0; i < length; ++i) {
-        left[i] += inL[(offset + i * speed)|0] * this.clipTable[i];
-        right[i] += inR[(offset + i * speed)|0] * this.clipTable[i];
+        left[i] += inL[(offset + i * speed) | 0] * this.clipTable[i];
+        right[i] += inR[(offset + i * speed) | 0] * this.clipTable[i];
     }
     this.audioOffset += length * this.audioSpeed;
-    
+
     for (i = length; i < totalLength; ++i)
         left[i] = right[i] = 0;
 };
@@ -216,7 +216,7 @@ Mp3Player.prototype.load = function (file, cb) {
         console.log('album: ' + this.id3.album());
         console.log('artist: ' + this.id3.artist());
     }
-    this.audioContext.decodeAudioData(file, function(buffer) {
+    this.audioContext.decodeAudioData(file, function (buffer) {
         this.audioPause = true;
         this.audioBuffer = null;
         this.audioOffset = 0;
@@ -271,7 +271,7 @@ Mp3Player.prototype.setSource = function (mode) {
 };
 
 Mp3Player.prototype.setDuration = function (duration) {
-    this.audioOffset = ((this.audioLength - 1) * duration)|0;
+    this.audioOffset = ((this.audioLength - 1) * duration) | 0;
     if (this.audioOffset < this.audioStartPoint)
         this.audioStartPoint = this.audioOffset;
     if (this.audioOffset > this.audioEndPoint)
@@ -324,3 +324,9 @@ Mp3Player.prototype.title = function () {
         return '';
     return this.id3.title();
 };
+
+Mp3Player.prototype.resume = function () {
+    if (this.audioContext.state != 'suspended')
+        return;
+    this.audioContext.resume();
+}
